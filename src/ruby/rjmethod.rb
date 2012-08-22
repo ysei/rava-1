@@ -11,8 +11,8 @@
 #
 #
 #
-require 'rjopcodeinfo'
-require 'rjnative'
+require './rjopcodeinfo.rb'
+require './rjnative.rb'
 
 
 class RJMethod

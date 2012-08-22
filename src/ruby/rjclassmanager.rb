@@ -12,8 +12,8 @@
 #
 #
 
-require 'rjclass'
-require 'rjthread'
+require './rjclass.rb'
+require './rjthread.rb'
 require 'singleton'
 
 class RJClassManager

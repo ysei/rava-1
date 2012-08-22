@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-require 'rjclassmanager'
+require './rjclassmanager.rb'
 
 class RJN_java_lang_Thread < RJNative
 

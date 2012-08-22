@@ -14,8 +14,8 @@
 
 
 # 必要なのも、少ないねぇ・・・
-require 'rjthreadmanager'
-require 'rjclassmanager'
+require './rjthreadmanager.rb'
+require './rjclassmanager.rb'
 
 ##############################################
 # start

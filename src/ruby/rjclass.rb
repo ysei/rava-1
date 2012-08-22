@@ -11,8 +11,8 @@
 # java のクラスを読み込む
 #
 
-require 'rjinstance'
-require 'rjmethod'
+require './rjinstance.rb'
+require './rjmethod.rb'
 
 class RJClass
   

@@ -11,9 +11,9 @@
 # Thread 実行実態
 #
 
-require 'rjopcodeinfo'
-require 'rjout'
-require 'rjexception'
+require './rjopcodeinfo.rb'
+require './rjout.rb'
+require './rjexception.rb'
 
 class RJThread
   include RJOpcodeinfo
@@ -59,7 +59,7 @@ class RJThread
     while true
       # puts @method.to_s + "========================= #{@pc}"
       bc = @method.code[@pc]
-      bn = OpcodeName[bc]
+      bn = OpcodeName[bc.to_i]
       # puts sprintf('** %4d : %s',@pc,@method.to_s)
       begin
         self.__send__('op_'+bn)
@@ -268,6 +268,6 @@ stack frame
   
 end
 
-require 'rjthread_op_impl'
+require './rjthread_op_impl.rb'
 
 

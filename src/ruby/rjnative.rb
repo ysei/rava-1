@@ -16,10 +16,10 @@ class RJNative
 end
 
 
-require 'rjn_class'
-require 'rjn_system'
-require 'rjn_nums'
-require 'rjn_thread'
+require './rjn_class.rb'
+require './rjn_system.rb'
+require './rjn_nums.rb'
+require './rjn_thread.rb'
 
 
 if __FILE__ == $0
