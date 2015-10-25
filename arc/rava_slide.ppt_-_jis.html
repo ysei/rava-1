@@ -1,0 +1,2058 @@
+<meta http-equiv="Content-Type" content="text/html">
+<base href="http://www.namikilab.tuat.ac.jp/~sasada/prog/rava_slide.ppt"><style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}pre { word-wrap:break-word; }pre { white-space:pre-wrap; }</style><div id="google-cache-hdr"  dir=ltr><div>This is the html version of the file <a href="http://www.namikilab.tuat.ac.jp/~sasada/prog/rava_slide.ppt" dir="ltr">http://www.namikilab.tuat.ac.jp/~sasada/prog/rava_slide.ppt</a>.<br><b>Google</b> automatically generates html versions of documents as we crawl the web.</div></div><div style="position:relative;margin:8px;">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Rava 〜Rubyで書いたJavaVMの話〜 
+</title>
+<meta name="Author" content="ko1" />
+<meta name="document template" content="C:\Program Files\Microsoft Office\Templates\Presentation Designs\Blueprint.pot" />
+<meta name="last saved by" content="K.Sasada" />
+<meta name="revision number" content="293" />
+<meta name="source" content="Microsoft PowerPoint" />
+<meta name="edit minutes" content="2984" />
+<meta name="creation date" content="12/2/2002 15:42:43" />
+<meta name="Last Saved Date" content="12/13/2002 02:32:00" />
+<meta name="word count" content="2229" />
+<meta name="Presentation Format" content="画面に合わせる" />
+<meta name="Count Bytes" content="256045" />
+<meta name="Count Paragraphs" content="559" />
+<meta name="Count Slides" content="53" />
+<meta name="Count Notes" content="6" />
+<meta name="Count Slides Hidden" content="0" />
+<meta name="Count MM Clips" content="0" />
+<meta name="Scale Crop" content="no" />
+<meta name="Links Dirty" content="no" />
+
+
+</head>
+
+<body>
+
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="4" face="Tahoma">1 </font>&nbsp;<br />
+</p>
+<p align="center"><font color="#660066" size="7" face="Tahoma">Rava&nbsp;<br />
+</font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">〜</font><font
+ color="#660066" size="7" face="Tahoma">Ruby</font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">で書いた</font><font
+ color="#660066" size="7" face="Tahoma">JavaVM</font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の話〜</font><font
+ color="#660066" size="7" face="Tahoma"> </font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">東京農工大学　工学部</font></p>
+<p align="center"><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">情報コミュニケーション工学科</font></p>
+<p align="center"><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">並木研究室　　笹田耕一</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">2 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">ラバとは</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>学名</b></font><font
+   color="#40458C" size="6" face="Tahoma"><b>&nbsp;</b>
+  Equus asinus&nbsp; X &nbsp;Equus caballus</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ロバのオスと、ウマのメスの雑種</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">繁殖力のない一代雑種</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">丈夫でおとなしい</font></li>
+</ul>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">別の種が交雑して子供を作る（しかもそいつには繁殖力がない）という異常なものでも、利用価値があれば騾馬のようにふつうの生き物になってしまう例。&nbsp;<br />
+    </font><font color="#40458C" size="6" face="Tahoma">(</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">現代中国語動物名リスト＜馬＞</font><font
+     color="#40458C" size="6" face="Tahoma"> </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">より</font><font
+     color="#40458C" size="6" face="Tahoma">)</font>&nbsp;<br /></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">3 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">とは</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">pure Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">な</font><font
+   color="#40458C" size="7" face="Tahoma"> JavaVM</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">インタプリタ言語による</font><font
+     color="#40458C" size="6" face="Tahoma"> JavaVM</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">Java </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">バイトコードを実行</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">開発は５＋α日</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">4 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">とは</font><font
+ color="#660066" size="7" face="Tahoma">(Demo)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">C </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">で書かれた</font><font
+   color="#40458C" size="7" face="Tahoma"> SDL</font><font color="#40458C" size="6" face="Tahoma">(Simple 
+  DirectMedia Layer)</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">を</font><font
+   color="#40458C" size="7" face="Tahoma"> </font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">用に</font><font
+   color="#40458C" size="7" face="Tahoma"> Wrap </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">した</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby/SDL </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">で、</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">Java </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">で</font><font
+   color="#40458C" size="7" face="Tahoma"> SDL </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">を使うプログラムを書いて、</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">そのネイティブコードを</font><font
+   color="#40458C" size="7" face="Tahoma"> Rava </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">で動かす</font></li>
+</ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">各四角形は別スレッドで動いている</font>&nbsp;<br />
+  </li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">5 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の用途</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ネイティブメソッドを</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">で記述できる</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">プログラミングのプロトタイプに利用</font></li>
+</ul></ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">が動いて</font><font
+   color="#40458C" size="7" face="Tahoma">JavaVM </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">が無い環境で</font><font
+   color="#40458C" size="7" face="Tahoma">Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">が動く（そんな環境は無いかも）</font>&nbsp;<br />
+  </li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">教育用ソフトウェア（自分用）</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ジョークソフト（重要）</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">6 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Ruby </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">とは</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">国産オブジェクト指向言語</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Perl </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">みたいな</font><font
+     color="#40458C" size="6" face="Tahoma"> Smalltalk</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Smalltalk </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">みたいな</font><font
+     color="#40458C" size="6" face="Tahoma"> Perl </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">じゃない</font></li>
+</ul></ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">最近の言語の主要な機能を押さえている</font>&nbsp;<br />
+  </li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">GC / Thread 
+    / </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外など</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">7 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">関連研究</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Jalapeno 
+  - Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">による</font><font
+   color="#40458C" size="7" face="Tahoma"> JavaVM </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">の実装</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">Kawa / MScheme </font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">による</font><font
+     color="#40458C" size="6" face="Tahoma"> Scheme </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">処理系</font></li>
+</ul></ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">JRuby - 
+  Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">による</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">の実装</font>&nbsp;<br />
+  </li>
+  <li><font color="#40458C" size="7" face="Tahoma">java-module 
+  - Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">から</font><font
+   color="#40458C" size="7" face="Tahoma"> Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">を利用</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">C </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">拡張ライブラリ</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">8 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">開発動機</font><font
+ color="#660066" size="7" face="Tahoma">(1) </font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">「メモリーマネージメント<b>」チュートリアル</b></font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>ＧＣなんて、自分で実装するものじゃないよね</b></font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">がマイブームだった</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">では開発が楽そうだっ</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">GC / Thread </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">は勝手にやってくれる</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">JavaVM </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">は去年一個作った</font><font
+   color="#40458C" size="7" face="Tahoma">(C++)</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">誰もやっていなそうだ</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">卒論・ゼミの準備で忙しかった</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">9 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">開発動機</font><font
+ color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">卒論</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">マルチスレッドアーキテクチャ</font></li>
+</ul></ul>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; </font><font
+ color="#40458C" size="6" face="ＭＳ Ｐゴシック">→</font><font
+ color="#40458C" size="6" face="Tahoma">OChiMuS </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">プロセッサ（農工大中條研）</font></p>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">「マルチスレッドアーキテクチャにおける</font></li>
+</ul></ul>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　　ユーザレベルスレッドライブラリの試作と評価」</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">スレッドを扱えるプログラミング言語による</font><font
+   color="#40458C" size="7" face="Tahoma"> JavaVM </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">の実装</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">今後、</font><font
+   color="#40458C" size="7" face="Tahoma">JavaVM </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">を開発していく上でのプロトタイプ、及び練習用（自分用教育ソフト）</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">10 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">発表の経緯</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Slashdot.jp </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">でアレゲなネタとして掲載</font></li>
+</ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">並木先生から、</font><font
+   color="#40458C" size="7" face="Tahoma">10</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">月の終わりごろ</font>&nbsp;<br />
+  </li>
+</ul>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">「伊知地さんから</font><font
+ color="#40458C" size="7" face="Tahoma"> Rava </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">のこと聞きたいって頼まれた。</font><font
+ color="#40458C" size="7" face="Tahoma">PTT </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">で発表よろしく」</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">現在に至る</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">11 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">JavaVM Summary</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">スタックマシン</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">各</font><font
+     color="#40458C" size="6" face="Tahoma">Java</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">スレッドに一つのスタックを持つ</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">バイトコード各命令は型付けされている</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ロード・ストア・算術・条件分岐・オブジェクト</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">オブジェクト操作・メソッド起動・スタック操作</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">マシン独立なクラスファイル</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">GC / </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">例外</font><font
+   color="#40458C" size="7" face="Tahoma"> / </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">スレッド</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">12 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の機能</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスファイルのロード</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">バイトコードの解釈実行</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">未実装バイトコードあり</font></li>
+    </ul>
+  <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">によるネイティブメソッドの記述実行</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外処理機</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">スレッド管理</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">とりあえずスレッド生成が出来る、程度</font></li>
+    </ul>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">セキュリティなどは、とりあえず無視</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">のセキュリティモデルとあわせることは可能か？</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">13 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font><font color="#660066" size="7" face="ＭＳ Ｐゴシック">全体構成</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">ClassFile(hoge.class)</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma"><b>Ruby 
+Interpreter</b></font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Class 
+Loader</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Thread</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">PC</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Operand 
+Stack</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">・・・</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Stack 
+Frame</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">javac</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Java 
+Program(hoge.java)</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Class</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Constant 
+Pool</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Method 
+Info</font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Other 
+Info</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">…</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Method</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Bytecode</font></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Interpreter</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Bytecode</font></p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Compiler</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">Profiler</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">14 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：クラスローダ</font><font
+ color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">クラスファイルの定義どおり読み込み</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">super class</font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">（クラス階層・継承関係の管理）</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">コンスタントプール</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">メソッド定義（ハッシュテーブルで保持）</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">バイトコード列（数値の配列として読み込み）</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外テーブル</font></li>
+      </ul>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">インターフェース定義（ハッシュテーブルで保持）</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">フィールド定義（ハッシュテーブルで保持）</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">クラスファイルベリファイはしない</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">15 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：クラスローダ</font><font
+ color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">クラス階層</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">読み込んだクラスの基底クラスが無ければ、先にそれをロードする</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ロード終了時には、そのクラスの親にあたるクラスは必ずロードされている</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">親クラスへのリファレンスを保持しておく</font></li>
+</ul></ul>
+&nbsp;<br />
+<p align="center"><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>子クラス</b></font><font
+ color="#40458C" size="6" face="Tahoma"><b>A</b></font>&nbsp;<br /></p>
+<p align="center"><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>親クラス</b></font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="Tahoma">java.lang.Object</font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>・・・</b></font>&nbsp;<br />
+</p>
+<p align="center"><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>子クラス</b></font><font
+ color="#40458C" size="6" face="Tahoma"><b>B</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">16 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font><font
+ color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">整数型</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java</font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">singed 
+      :&nbsp;byte(8bit) , short(16bit) , &nbsp;&nbsp;&nbsp;&nbsp;int(32bit) ,long(singed 64bit)</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">char(unsigned 
+      16bit)</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">boolian(1bit)</font></li>
+      </ul>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">Fixnum(signed 
+      31bit)</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">Bignum(signed </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">多倍長</font><font
+       color="#40458C" size="6" face="Tahoma">)</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">Fixnum </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">⇔</font><font
+       color="#40458C" size="6" face="Tahoma"> Bignum </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">の変換は自動で行われる</font></li>
+</ul></ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">17 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font><font
+ color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">浮動小数点</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">float(IEEE754 </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">単精度</font><font
+       color="#40458C" size="6" face="Tahoma">32bit)</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">double(IEEE754 </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">倍精度</font><font
+       color="#40458C" size="6" face="Tahoma">64bit)</font></li>
+      </ul>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">全て</font><font
+       color="#40458C" size="6" face="Tahoma"> Float&nbsp; </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスに（なので精度は不正確）</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスロード時に、規定の計算によって算出</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">NaN </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">などは未定義</font></li>
+      </ul>
+    <li><font color="#40458C" size="6" face="Tahoma">FP-strict </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">はサポートしない</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">18 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font><font
+ color="#660066" size="7" face="Tahoma">(3)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">文字列</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスファイル内では</font><font
+     color="#40458C" size="6" face="Tahoma">UTF-8</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Rava </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">内部では</font><font
+     color="#40458C" size="6" face="Tahoma"> UTF-16</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">出力はプラットホーム依存エンコーディング</font></li>
+</ul></ul>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">従来の</font><font
+     color="#40458C" size="6" face="Tahoma"> JavaVM </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">と同様</font>&nbsp;<br />
+    </li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">文字コードの扱いは</font><font
+     color="#40458C" size="6" face="Tahoma"> Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">は得意</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"><font color="#40458C" size="6" face="Tahoma">19 </font>&nbsp;<br />
+</p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font><font
+ color="#660066" size="7" face="Tahoma">(4)</font>&nbsp;<br /></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">オブジェクトへのリファレンス</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ハンドルへのポインタ</font></li>
+</ul></ul></ul>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　</font><font
+ color="#40458C" size="6" face="Tahoma">(JDK1.0 </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">での例</font><font
+ color="#40458C" size="6" face="Tahoma">)</font>&nbsp;<br /></p></ul>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">表現</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">RJInstance </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">のインスタンスへのリファレンス</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">そもそも、</font><font
+       color="#40458C" size="6" face="Tahoma">Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">も全て変数はリファレンスである</font></li>
+</ul></ul></ul>
+&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>ref</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Obj ptr</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Class ptr</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Heap</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Obj</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Class</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">20 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(5)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Java </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">オブジェクト（クラスのインスタンス）</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">で、インスタンスを表現するクラスをつくり、それを保持する</font></li>
+</ul>
+&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>インスタンス</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Owner</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Fields</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Hoge Class</b></font></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>表現</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Program</b></font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">Hoge hogeInst =</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; new Hoge();</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>ref</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">21 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：内部表現</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(6)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">配列</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">の配列</font><font
+     color="#40458C" size="6" face="Tahoma">(Array </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラス</font><font
+     color="#40458C" size="6" face="Tahoma">)</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">をそのまま流用</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">全てのインスタンスが配列の要素になれる</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">可変長配列なので、範囲外指定で例外発生させる工夫が必要になる&nbsp;<br />
+    →</font><font color="#40458C" size="6" face="Tahoma">Array </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスを派生したクラスを用意</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">22 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：バイトコードの解釈実行</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">検討</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">どのようにバイトコードを実行していくのか</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">案１：</font><font
+       color="#40458C" size="6" face="Tahoma"> case / when </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">による記述</font><font
+       color="#40458C" size="6" face="Tahoma">(C </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">での</font><font
+       color="#40458C" size="6" face="Tahoma"> switch </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">文</font><font
+       color="#40458C" size="6" face="Tahoma">)</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">案２：シンボルテーブルによるメソッドコール</font></li>
+</ul></ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">(C </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">で言う関数テーブルでの関数呼び出し）</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　→コールスレッディング</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;</font></p>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">での</font><font
+     color="#40458C" size="6" face="Tahoma"> case/when </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">は遅いため、後者を</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">case/when </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">は、上から逐次比較するため</font></li>
+</ul></ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">23 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：バイトコードの解釈実行</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">基本はスレッデッドコードを逐次実行</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">各バイトコードにメソッドを用意</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">基本は次の無限ループ</font></li>
+</ul></ul>
+&nbsp;<br />
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">while(true)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; bc 
+= @method.code[@pc]</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; self.__send__ 
+OpcodeExecSymbol[bc]</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; end</font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">Ruby </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">のメソッド起動はオブジェクト</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">(self)</font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">へメッセージ</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">(symbol)</font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">を</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">send </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">するモデル</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">(Like SmallTalk)</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">24 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">解釈実行：数値演算</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">の四則演算をそのまま利用</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">例：</font><font
+   color="#40458C" size="7" face="Tahoma">iadd </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">→</font><font
+   color="#40458C" size="7" face="Tahoma"> push (pop + pop)</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">push/pop </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">はオペランドスタックへの操作</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">は固定</font><font
+   color="#40458C" size="7" face="Tahoma">bit</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">長数値型が無い</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">オーバーフロー、アンダーフローしてくれない</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">これに気づかずはまる</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　左シフトで符号を逆転させるプログラムで、</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　符号がいつまでも逆転しない</font></p>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">対応は現在いいかげんに</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">真面目に対応すると、コストがかかる・・・</font></li>
+</ul></ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">25 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">解釈実行：メソッド起動</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">クラスの階層を解し、メソッドを検索する</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">class Hoge{</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; public hoge(){}</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">}</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">class HogeHoge entends 
+Hoge{</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">}</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">// </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">…</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">HogeHoge.new().hoge();</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">// Hoge </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスの</font></p>
+<p><font color="#40458C" size="6" face="Tahoma"> hoge </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">を呼ばなければならない！</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">26 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">解釈実行：メソッド起動</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">メソッドコールは名前でコールする</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">各スレッドにひとつのオペランドスタックを用意</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">スタックは</font><font
+     color="#40458C" size="6" face="Tahoma"> Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">の配列</font></li>
+    </ul>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">オペランドスタックにフレームを作成する</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ローカル変数領域</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">フレーム情報</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">現在のメソッドへのポインタ</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">現在のメソッドの</font><font
+       color="#40458C" size="6" face="Tahoma">ProgramCounter</font></li>
+      <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">現在のフレームの情報</font></li>
+      </ul></ul>
+  <li><font color="#40458C" size="6" face="Tahoma">Return </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">はフレームを取り除く処理</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">27 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">解釈実行：メソッド起動</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(3)</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">今までのフレーム…</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ローカル変数</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">フレーム情報</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma">Operand Stack</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">これから積む</font></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">スタック領域</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">28 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：ネイティブメソッド</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ネイティブメソッドとは</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">で表現できないことをするための抜け道</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例えば「スレッド管理」、「入出力」など</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">普通は</font><font
+     color="#40458C" size="6" face="Tahoma"> C </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">などで書く</font></li>
+</ul></ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">でこれを書くインターフェースを用意</font>&nbsp;<br />
+  </li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">JNI(Java 
+    Native Interface) </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">のようなもの</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">モックオブジェクトなど、</font><font
+     color="#40458C" size="6" face="Tahoma">Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">で書ける</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">29 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：ネイティブメソッド</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">例</font></li>
+</ul>
+&nbsp;<br />
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Program</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">class Hoge{</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; public native 
+nfunc();</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">}</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma">ruby rjnative.rb</font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Source</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">class RJN_Hoge &lt; 
+RJNative</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; # void nfunc()</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; def nfunc this,arg,method,thread</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; # </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ここに処理を書く</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">end</font>&nbsp;<br />
+</p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">30 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：例外処理機構</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">の例外は、例外テーブルによる</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外発生場所</font><font
+     color="#40458C" size="6" face="Tahoma"> </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">⇔例外キャッチ位置　の対応付け</font><font
+     color="#40458C" size="6" face="Tahoma"> </font></li>
+    </ul>
+  <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">の例外処理機構を利用</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Bytecode 
+    interpreter </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">内で、</font><font
+     color="#40458C" size="6" face="Tahoma">Java </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外が発生したら</font></li>
+</ul></ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p><font color="#40458C" size="6" face="Tahoma">Ruby </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">の例外を発生させてしまう</font></p>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">これにより、全ての</font><font
+     color="#40458C" size="6" face="Tahoma">Java</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">の例外を表現することが可能</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例：</font><font
+     color="#40458C" size="6" face="Tahoma">athrow bytecode</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"> def op_athrow</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; raise 
+RJAthrowException.new(pop)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; end</font>&nbsp;<br />
+</p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">31 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：例外処理機構</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">インタープリタ上位部で、</font><font
+   color="#40458C" size="6" face="Tahoma">Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">例外を捕捉</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">def interpreter</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp; 
+while true</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+begin</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">現在の</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">PC</font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">でのバイトコードを実行（メソッド起動）</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+rescue RJException</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">該当する例外テーブルを検索</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">スタックを巻き戻して見つかるまで行う</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">見つかれば</font></p>
+<p><font color="#40458C" size="6" face="Tahoma"> PC </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">をそこに設定する</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">…</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp; end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">end</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">32 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：ガベージコレクション</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">GC </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">は</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">に全てまかせる</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">GC </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">のタイミングは</font><font
+     color="#40458C" size="6" face="Tahoma"> Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">任せ</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">全ての</font><font
+     color="#40458C" size="6" face="Tahoma"> Java </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">オブジェクトは</font><font
+     color="#40458C" size="6" face="Tahoma"> Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">オブジェクト</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">必要なくなれば、</font><font
+     color="#40458C" size="6" face="Tahoma">Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">の</font><font
+     color="#40458C" size="6" face="Tahoma"> GC </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">が後始末する</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">の</font><font
+     color="#40458C" size="6" face="Tahoma">GC</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">は保守的マーク＆スイープモデル</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">33 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">実装：スレッド管理</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">のスレッドの機能に委譲</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ネイティブメソッドによる</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Java.lang.Thread.start() </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">により、</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; Ruby </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">のスレッドを起動させる</font></p>
+<ul><ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">同期処理などは現状ではさぼっている</font></li>
+</ul></ul>
+&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Interpreter</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Thread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Thread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Thread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Thread A</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Thread B</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Thread C</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">34 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">クラス関係図</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJThreadManager</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJThread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJThread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJThread</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJClassManager</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJClass</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJClass</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJClass</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJClass</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJMethod</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJMethod</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJMethod</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJInstance</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJInstance</b></font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>RJInstance</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">35 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の評価（メモリ使用量）</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">評価環境</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Intel Celeron 
+    1.4GHz / Mem 256MB</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Windows2000</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Sun JDK1.3.1(-classic </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">オプション</font><font
+     color="#40458C" size="6" face="Tahoma">)</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby 1.6.7 
+    mswin</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">版</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">評価プログラム</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">for(int 
+    i=0;i&lt;1000000;i++){&nbsp;<br />
+    &nbsp;Hoge hogeInst = new Hoge();&nbsp;<br />
+    } </font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">36 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">評価結果（メモリ使用量）</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">37 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の評価（動作速度）</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">評価プログラム</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">評価用プログラム&nbsp;<br />
+    </font><font color="#40458C" size="6" face="Tahoma">long n=0;&nbsp;<br />
+    for(int i=0;i&lt;1000000;i++){n++;}</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">C </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">評価用プログラム&nbsp;<br />
+    </font><font color="#40458C" size="6" face="Tahoma">volatile int n=0,i=0;&nbsp;<br />
+    for(i=0;i&lt; 1000000;i++,n++);</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">評価用プログラム</font></li>
+</ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">n=0 ; 1000000.times{n+=1}</font>&nbsp;<br />
+</p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">38 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">評価結果（動作速度）</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="7" face="Tahoma"><b>440</b></font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック"><b>倍</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">39 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">Rava </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">の評価結果</font>&nbsp;<br />
+&nbsp;<br />&nbsp;<br />&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">遅い！</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">40 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイラの試作</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">この場合、コンパイルで生成するものは？</font></li>
+</ul>
+<p></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">　　→　</font></p>
+<p><font color="#40458C" size="7" face="Tahoma">Ruby </font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">のソースコード</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">スタックマシンのバイトコード</font></li>
+</ul>
+<p></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">　　→　</font></p>
+<p><font color="#40458C" size="7" face="Tahoma">Ruby </font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">のソースコード　という変換</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">41 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイラ：いつ起動する？</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">JIT </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">→</font><font
+   color="#40458C" size="7" face="Tahoma"> Just In Time</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">プロファイラの導入</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">メソッド起動時に、起動回数を数える</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">起動回数が閾値を超えるとコンパイル開始</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">Sun </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">の</font><font
+   color="#40458C" size="7" face="Tahoma"> HotSpot VM </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">では、もう少しきつく</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">後方参照でのジャンプでもこのチェックを行う</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Rava </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">でも手軽にその実装は可能</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">42 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイラ</font></p>
+<p><font color="#660066" size="7" face="Tahoma">:</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">どうやって？</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Java Program 
+  Sample</font></li>
+</ul>
+&nbsp;<br />&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Bytecode</b></font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>&nbsp;&nbsp; </b>
+0&nbsp;lconst_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 1&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 2&nbsp;iconst_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 3&nbsp;istore_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 4&nbsp;goto 14</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 7&nbsp;lload_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 8&nbsp;lconst_1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 9&nbsp;ladd</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 10&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 11&nbsp;iinc 2 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 14&nbsp;iload_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 15&nbsp;ldc (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 17&nbsp;if_icmplt 7</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java </b></font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>プログラム</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">long n = 0;</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">for(int i=0;i&lt;100;i++){</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; n++;</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">}</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>ループ部分</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">43 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイル</font></p>
+<p><font color="#660066" size="7" face="Tahoma">: </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">どうやって？</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">各バイトコード実行メソッドを展開するだけ</font></li>
+</ul>
+<p></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">　→</font></p>
+<p><font color="#40458C" size="7" face="Tahoma">&nbsp;</font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">全然速くならなかった</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Bytecode</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 7&nbsp;lload_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 8&nbsp;lconst_1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 9&nbsp;ladd</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 10&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 11&nbsp;iinc 2 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 14&nbsp;iload_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 15&nbsp;ldc (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 17&nbsp;if_icmplt 7</font>&nbsp;<br />
+&nbsp;<br />&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Source</b></font>&nbsp;<br />
+&nbsp;<br />&nbsp;<br /></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- lload_0</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; push2 
+local2(0)</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- lconst_1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; push2 
+1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- ladd</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; push2 
+pop2 + pop2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; local_set2 
+0,pop2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- iinc</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; i 
+= u1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @stack[@fp+i] 
++= s1(2)</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 3 </font>&nbsp;<br />&nbsp;<br /></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- iload_2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; push 
+local(2)</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- bipush</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; push 
+s1</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; @pc 
++= 2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma"> # -- if_icmplt</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; v2 
+= pop ; v1 = pop</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; if 
+v1 &lt; v2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += s2</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; else</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += 3</font></p>
+<p></p>
+<p><font color="#40458C" size="4" face="Tahoma">&nbsp;&nbsp;&nbsp; end</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">44 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイル</font></p>
+<p><font color="#660066" size="7" face="Tahoma"> : </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">どうやって？</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(3)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">らしい</font></li>
+</ul>
+<p></p>
+<p><font color="#40458C" size="7" face="Tahoma">&nbsp; </font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ソースコードへ変換</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Bytecode</b></font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 7&nbsp;lload_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 8&nbsp;lconst_1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 9&nbsp;ladd</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 10&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 11&nbsp;iinc 2 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 14&nbsp;iload_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 15&nbsp;ldc (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 17&nbsp;if_icmplt 7</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Source Code</b></font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">l2 = local(2)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">l0 = local(0)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">while true</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; l0 = 1 + l0 # 
+optimized</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; l2 += 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (l2) &lt; (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += 0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+else</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += 13</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+break if @pc == 20 ; end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">local_set(0,l0)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">local_set(2,l2)</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">45 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイル</font></p>
+<p><font color="#660066" size="7" face="Tahoma">:</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">問題点</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="Tahoma">Ruby </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">には</font><font
+   color="#40458C" size="7" face="Tahoma"> goto </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">が無い！</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">goto </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">命令を含む</font><font
+     color="#40458C" size="6" face="Tahoma"> Ruby </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ソースのコンパイルが出来ない（難しい）</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">検討</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Continuation </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">を使う？　→　重い</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">解決策</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ジャンプする部分は従来どおりインタプリタで</font></li>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">出来るだけインタプリタに渡さない工夫が必要</font></li>
+</ul></ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">46 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイル：最終的に</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">メソッドを動的に生成</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">eval </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">により、メソッドを動的に定義する</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="Tahoma">impdep1 </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">バイトコードを利用</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">impdep1 </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">は、その</font><font
+     color="#40458C" size="6" face="Tahoma"> Program Counter </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">に対応するコンパイル後のメソッドを起動する</font></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">一重ループの場合は</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">の構文で対応</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">47 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイル：最終的に</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Java Bytecode</b></font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>&nbsp;&nbsp; </b>
+0&nbsp;lconst_0 </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">→</font></p>
+<p><font color="#40458C" size="6" face="Tahoma"> impdep1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 1&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 2&nbsp;iconst_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 3&nbsp;istore_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 4&nbsp;goto 14</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 7&nbsp;lload_0</font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　→</font></p>
+<p><font color="#40458C" size="6" face="Tahoma"> impdep1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 8&nbsp;lconst_1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp; 9&nbsp;ladd</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 10&nbsp;lstore_0</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 11&nbsp;iinc 2 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 14&nbsp;iload_2</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 15&nbsp;ldc (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; 17&nbsp;if_icmplt 7</font>&nbsp;<br />
+&nbsp;<br /></p>
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="Tahoma"><b>Ruby Source Code</b></font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">l2 = local(2)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">l0 = local(0)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">while true</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; l0 = 1 + l0 # 
+optimized</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; l2 += 1</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (l2) &lt; (100)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += 0 # PC = 7</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+else</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+@pc += 13# PC=20</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+break if @pc == 20 ; end</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">local_set(0,l0)</font></p>
+<p></p>
+<p><font color="#40458C" size="6" face="Tahoma">local_set(2,l2)</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">48 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT </font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイルの評価</font>&nbsp;<br />
+</p>
+<p align="center"></p>
+<p><font color="#40458C" size="7" face="Tahoma"><b>25</b></font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック"><b>倍高速化！</b></font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">49 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="Tahoma">JIT</font></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">コンパイラ：今後の課題</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">元は</font><font
+   color="#40458C" size="7" face="Tahoma"> goto </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">の無い</font><font
+   color="#40458C" size="7" face="Tahoma"> Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">のプログラムだったのだから、実行フローの解析を行い、</font><font
+   color="#40458C" size="7" face="Tahoma">Java </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">プログラムのループを全て</font><font
+   color="#40458C" size="7" face="Tahoma"> Ruby </font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">のソースに置き換えるようなプログラムを作ればこの問題点は解決する</font></li>
+</ul>
+&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="7" face="Tahoma">Java Bytecode </font></p>
+<p><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">→</font></p>
+<p><font color="#40458C" size="7" face="Tahoma"> Ruby Source Convereter</font></p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">本当は、例外なんかも考えないといけない</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">50 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">生産性</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(1)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">クラスファイルアナライザ　&nbsp;</font><font
+   color="#40458C" size="7" face="Tahoma">1</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">日</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ＶＭ基礎部　&nbsp;&nbsp;&nbsp;&nbsp;</font><font
+   color="#40458C" size="7" face="Tahoma">3</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">日</font></li>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">スレッド対応　&nbsp;&nbsp;&nbsp;&nbsp;</font><font
+   color="#40458C" size="7" face="Tahoma">2</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">日</font></li>
+  <li><font color="#40458C" size="7" face="Tahoma">JIT </font><font
+   color="#40458C" size="7" face="ＭＳ Ｐゴシック">コンパイラ試作　&nbsp;&nbsp;</font><font
+   color="#40458C" size="7" face="Tahoma">1</font><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">日</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">51 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">生産性</font></p>
+<p><font color="#660066" size="7" face="Tahoma">(2)</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">ソフトウェア規模</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">5000 </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">行ほど</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">rjclass.rb 
+      (</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クラスローダ</font><font
+       color="#40458C" size="6" face="Tahoma">) </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">約</font><font
+       color="#40458C" size="6" face="Tahoma">400</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">行</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">rjmethod.rb 
+      (</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">メソッド表現</font><font
+       color="#40458C" size="6" face="Tahoma">) </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">約</font><font
+       color="#40458C" size="6" face="Tahoma">400</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">行</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">rjthread.rb </font><font
+       color="#40458C" size="6" face="ＭＳ Ｐゴシック">（スレッド実行）</font><font
+       color="#40458C" size="6" face="Tahoma"> </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">約</font><font
+       color="#40458C" size="6" face="Tahoma">300</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">行</font></li>
+      </ul>
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">半分は自動生成したソースコード</font></li>
+    <ul type="DISC">
+      <li><font color="#40458C" size="6" face="Tahoma">rjopcodeinfo.rb 
+      (</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">バイトコード情報</font><font
+       color="#40458C" size="6" face="Tahoma">) </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">約</font><font
+       color="#40458C" size="6" face="Tahoma">1000</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">行</font></li>
+      <li><font color="#40458C" size="6" face="Tahoma">rjthread_op_impl.rb 
+      (</font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">バイトコード解釈実行</font><font
+       color="#40458C" size="6" face="Tahoma">)</font></li>
+</ul></ul></ul>
+<p></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">　　　　　　　　　　&nbsp;&nbsp;&nbsp;</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">&nbsp; </font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">約</font></p>
+<p><font color="#40458C" size="6" face="Tahoma">2000</font></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">行</font></p>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">52 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">今後の展望</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">二段階</font><font
+   color="#40458C" size="6" face="Tahoma"> JIT </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">コンパイル</font></li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">クリティカルセクションを最適化コンパイル</font></li>
+    <li><font color="#40458C" size="6" face="Tahoma">Ruby / JavaBytecode </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">→　</font><font
+     color="#40458C" size="6" face="Tahoma">C source</font></li>
+</ul></ul>
+<ul type="DISC">
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">ネイティブメソッドの作成</font>&nbsp;<br />
+  </li>
+  <ul type="DISC">
+    <li><font color="#40458C" size="6" face="Tahoma">Java </font><font
+     color="#40458C" size="6" face="ＭＳ Ｐゴシック">のプログラムをもっと動かせるように</font></li>
+    </ul>
+  <li><font color="#40458C" size="6" face="Tahoma">Ruby </font><font
+   color="#40458C" size="6" face="ＭＳ Ｐゴシック">のクラスを</font><font
+   color="#40458C" size="6" face="Tahoma"> Java </font><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">からそのまま使えるように</font></li>
+  <li><font color="#40458C" size="6" face="ＭＳ Ｐゴシック">バグ取り</font></li>
+</ul>
+
+    
+    
+    
+    
+
+    
+    &nbsp;<br />&nbsp;<br />
+<p align="right"></p>
+<p><font color="#40458C" size="6" face="Tahoma">53 </font>&nbsp;<br />
+</p>
+<p></p>
+<p><font color="#660066" size="7" face="ＭＳ Ｐゴシック">さいごに</font>&nbsp;<br />
+</p>
+<ul type="DISC">
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">公開場所</font></li>
+  <ul type="DISC">
+    <li><a href="http://www.namikilab.tuat.ac.jp/~sasada/"><font color="#6F89F7" size="6" face="Tahoma"><u>http://www.namikilab.tuat.ac.jp/~sasada/</u></font></a></li>
+    </ul>
+  <li><font color="#40458C" size="7" face="ＭＳ Ｐゴシック">一応、情報処理学会全国大会で発表予定</font></li>
+</ul>
+&nbsp;<br />
+<p align="center"></p>
+<p><font color="#40458C" size="6" face="ＭＳ Ｐゴシック"><b>さて卒論・・・</b></font></p>
+
+    
+    
+    
+    
+
+</body>
+</html>
