@@ -2,8 +2,8 @@
 # @file   rava.rb
 # @author K.S.
 #
-# $Date: 2002/10/14 13:59:49 $
-# $Id: rava.rb,v 1.1 2002/10/14 13:59:49 ko1 Exp $
+# $Date: 2002/12/02 00:35:59 $
+# $Id: rava.rb,v 1.3 2002/12/02 00:35:59 ko1 Exp $
 #
 # Create : K.S. 02/10/12 18:18:31
 #
@@ -15,6 +15,9 @@
 # 必要なのも、少ないねぇ・・・
 require 'rjthreadmanager'
 require 'rjclassmanager'
+require 'kconv'
+
+$RJ_KCODE = Kconv::SJIS
 
 ##############################################
 # start
@@ -22,7 +25,12 @@ require 'rjclassmanager'
 tm = RJThreadManager.instance
 cm = RJClassManager .instance
 
-m = cm.load ARGV[0]      # main なクラスをロードする
+lc = ARGV[0] || 'test'
+
+# puts "load #{lc}"
+lc.gsub!('\.','/')
+
+m = cm.load lc           # main なクラスをロードする
 t = tm.create            # 新しいスレッドを用意
 t.set_main m,ARGV[1..-1] # main を起動する準備をする
 

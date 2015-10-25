@@ -2,8 +2,8 @@
 # @file   rjthread.rb
 # @author K.S.
 #
-# $Date: 2002/10/14 13:59:49 $
-# $Id: rjthread.rb,v 1.1 2002/10/14 13:59:49 ko1 Exp $
+# $Date: 2002/12/08 05:04:38 $
+# $Id: rjthread.rb,v 1.6 2002/12/08 05:04:38 ko1 Exp $
 #
 # Create : K.S. 02/10/12 15:17:24
 #
@@ -24,6 +24,8 @@ class RJThread
     @pc      = 0   # program counter
     @fp      = 0   # frame pointer
     @ruby_th = nil # ruby thread
+
+    @ruby_expr = {}
   end
 
   # clinit class を起動
@@ -39,7 +41,7 @@ class RJThread
   end
 
   def set_run obj
-    @method = obj.get_method 'run','()V'
+    @method = obj.owner.get_method 'run','()V'
     @stack += Array.new(@method.max_local)
     @stack[0] = obj
   end
@@ -47,9 +49,12 @@ class RJThread
   # 起動
   def kick
     @ruby_th = Thread.start{
-      self.interpret
-
-      RJThreadManager.instance.delete self
+      begin
+        self.interpret
+      ensure
+        puts 'finish thread'
+        RJThreadManager.instance.delete self
+      end
     }
   end
 
@@ -58,19 +63,36 @@ class RJThread
     while true
       # puts @method.to_s + "========================= #{@pc}"
       bc = @method.code[@pc]
-      bn = OpcodeName[bc]
-      # puts sprintf('** %4d : %s',@pc,@method.to_s)
+      # bn = OpcodeName[bc]
+      puts '** %4d : %s / %s' % [@pc,OpcodeName[bc],@method.to_s]
       begin
-        self.__send__('op_'+bn)
-        
+        #self.__send__('op_'+bn)
+        self.__send__ OpcodeExecSymbol[bc]
       rescue RJExceptionFinishThread
-        puts 'finish thread'
-        dump_stack 'finish'
         break
+      rescue RJAthrowException => e
+        # 例外が発生した
+        e = e.eobj
+        while true
+          p = @method.search_exception_handler e,@pc
+          if p
+            @pc = p
+            push e
+            break
+          end
+
+          begin
+            restore_frame
+          rescue RJExceptionFinishThread
+            puts 'fatal error'
+            break
+          end
+        end
       rescue
         print $! , ' at pc ' , @pc , ' in class : ' , @method.to_s , "\n"
         puts $@
         dump_stack 'error'
+        raise
         break
       end
     end
@@ -112,6 +134,13 @@ private
   def pop2
     @stack.pop
     @stack.pop
+  end
+  
+  def stacktop
+    @stack[-1]
+  end
+  def stacktop2
+    @stack[-2]
   end
   
 
@@ -166,7 +195,7 @@ private
     @method.const idx
   end
   def const2 idx
-    ((@method.const idx) << 32) + @method.const(idx+1)
+    @method.const idx
   end
 
   def get_caller_obj desc
@@ -226,6 +255,8 @@ stack frame
     extend_size = m.max_local - arg_size
     tfp         = @stack.size - arg_size
 
+    m.invoke
+    
     # puts "                              #{@stack.size} ==> #{extend_size}"
     
     # stack をフレーム分伸ばす
@@ -239,7 +270,7 @@ stack frame
     @method = m
     @fp     = tfp
 
-    dump_stack 'stored frame'
+    # dump_stack 'stored frame'
     
   end
 
@@ -261,10 +292,6 @@ stack frame
     # dump_stack 'restored frame'
     
   end
-
-  
-
-  
 end
 
 require 'rjthread_op_impl'

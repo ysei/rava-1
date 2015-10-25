@@ -2,8 +2,8 @@
 # @file   rjclassmanager.rb
 # @author K.S.
 #
-# $Date: 2002/10/14 13:59:49 $
-# $Id: rjclassmanager.rb,v 1.1 2002/10/14 13:59:49 ko1 Exp $
+# $Date: 2002/11/27 08:55:26 $
+# $Id: rjclassmanager.rb,v 1.3 2002/11/27 08:55:26 ko1 Exp $
 #
 # Create : K.S. 02/10/12 15:47:38
 #
@@ -13,11 +13,14 @@
 
 require 'rjclass'
 require 'rjthread'
+require 'rjnative'
+require 'rjout'
+
 require 'singleton'
 
 class RJClassManager
   include Singleton
-
+  include RJOut
   
   def initialize
     @jclasses = {}
@@ -25,9 +28,8 @@ class RJClassManager
 
   # class をロード
   def load name
-    puts " load class --> #{name}"
-    fn = name.gsub('\.','/') # hoe.hue => hoe/hue
-    fn += '.class'    #         => hoe/hue.class
+    loout " load class --> #{name}"
+    fn = name + '.class'    #         => hoe/hue.class
     c = nil
     open(fn,'rb'){|f|
       c = RJClass.new f
@@ -38,6 +40,14 @@ class RJClassManager
     if c.super_class
       c.set_super(get c.super_class)
     end
+
+    # RJN* があれば、ロードしておく
+    class_name = 'RJN_' + c.this_class.gsub('_','__').gsub('/','_')
+    file_name  = 'rjn/' + class_name + '.rb'
+    if FileTest.exist? file_name
+      Kernel.load file_name
+      c.set_native_support_class eval "#{class_name}.new"
+    end
     
     # clinit があったら
     # ...
@@ -47,12 +57,14 @@ class RJClassManager
       clinit_thread.interpret # ここで全部やってしまう
     end
 
+    loout " load finish --> #{name}"
     c
   end
 
   # class をゲットする。無ければロードする
   def get name
     # puts "load name : #{name}"
+    name.gsub!('\.','/') # hoe.hue => hoe/hue
     if @jclasses.key? name
       @jclasses[name]
     else
@@ -62,70 +74,4 @@ class RJClassManager
   
 end
 
-
-# require の順序の関係で、ここに
-
-class RJStringInstance < RJInstance
-
-  JStringClass = RJClassManager.instance.get('java.lang.String')
-  
-  def initialize msg = ''
-    @owner   = JStringClass
-    @fields  = {}
-    set_fields JStringClass
-    set_string msg
-  end
-
-  def get_string
-    if @fields.has_key? 'value'
-      @fields['value'].join
-    else
-      raise 'this instance is not string class.'
-    end
-  end
-  def set_string msg
-    if @fields.has_key? 'value'
-      @fields['value'] = msg.split('')
-      @fields['count'] = msg.split('').length
-    else
-      raise 'this instance is not string class.'
-    end
-  end
-  
-  def to_s
-    "String : '#{get_string}'"
-  end
-
-end
-
-class RJArrayInstance < Array
-  def to_s
-    ret = "Array(#{self.size}) : ["
-    10.times{|i|
-      if self.size < i
-        break
-      end
-      ret += self[i].to_s
-      ret += ','
-    }
-    ret + '...]'
-  end
-  def verbose
-    "Array(#{self.size}) : [" +
-    self.join(',') + ']'
-  end
-end
-
-class RJThreadInstance < RJInstance
-  JThreadClass = RJClassManager.instance.get('java.lang.Thread')
-
-  def initialize
-    @owner   = JThreadClass
-    @fields  = {}
-    set_fields JThreadClass
-  end
-  
-  def to_s
-    "Java Thread Instance"
-  end
-end
+require 'rjstring'

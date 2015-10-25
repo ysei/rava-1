@@ -2,8 +2,8 @@
 # @file   rjexception.rb
 # @author K.S.
 #
-# $Date: 2002/10/14 13:59:49 $
-# $Id: rjexception.rb,v 1.1 2002/10/14 13:59:49 ko1 Exp $
+# $Date: 2002/11/16 19:25:25 $
+# $Id: rjexception.rb,v 1.2 2002/11/16 19:25:25 ko1 Exp $
 #
 # Create : K.S. 02/10/13 14:36:56
 #
@@ -21,6 +21,14 @@ class RJExceptionFinishThread < RJException
   # ...
 end
 
+# athrow ‚Å—áŠO
+class RJAthrowException < RJException
+  attr_reader :eobj
+  def initialize e
+    @eobj = e
+  end
+  # ...
+end
 
 
 

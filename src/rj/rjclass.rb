@@ -2,8 +2,8 @@
 # @file   jrclass.rb
 # @author K.S.
 #
-# $Date: 2002/10/14 13:59:49 $
-# $Id: rjclass.rb,v 1.2 2002/10/14 13:59:49 ko1 Exp $
+# $Date: 2002/11/16 19:25:25 $
+# $Id: rjclass.rb,v 1.3 2002/11/16 19:25:25 ko1 Exp $
 #
 # Create : K.S. 02/10/09 04:05:39
 #
@@ -11,6 +11,10 @@
 #
 
 require 'rjinstance'
+require 'rjmethod'
+
+require 'uconv'
+require 'kconv'
 
 class RJClass
   
@@ -30,6 +34,7 @@ class RJClass
   attr_reader :super_class
   attr_reader :jfields
   attr_reader :super
+  attr_reader :native_support
   
   def initialize cls
     @jmethods = {}
@@ -43,6 +48,8 @@ class RJClass
     @cls      = nil
 
     @super    = nil
+    
+    @native_support_class = nil
   end
 
   def set_super cls
@@ -80,7 +87,7 @@ class RJClass
     end
   end
   
-  def get_static_field name
+  def [](name)
     if @jstaticfields.has_key? name
       @jstaticfields[name]
     else
@@ -92,7 +99,7 @@ class RJClass
     end
   end
   
-  def set_static_field name,value
+  def []=(name,value)
     if @jstaticfields.has_key? name
       @jstaticfields[name] = value
     else
@@ -115,6 +122,20 @@ class RJClass
     else
       false
     end
+  end
+
+  def is_kind_of str
+    if str == this_class
+      true
+    elsif @super
+      @super.is_kind_of str
+    else
+      false
+    end
+  end
+
+  def set_native_support_class c
+    @native_support = c
   end
 
   ###################################################
@@ -176,14 +197,32 @@ class RJClass
     when CONSTANT_Integer
       @jconsts << [tag,u4]
     when CONSTANT_Float
-      @jconsts << [tag,u4]
+      bits = u4
+      s = ((bits >> 31) == 0) ? 1 : -1
+      e = ((bits >> 23) & 0xff)
+      m = (e == 0) ?
+      (bits & 0x7fffff) << 1 :
+      (bits & 0x7fffff) | 0x800000
+      
+      @jconsts << [tag,s * m * (2 ** (e - 150))]
     when CONSTANT_Long
-      @jconsts << [tag,u4]
-      @jconsts << [tag,u4]
+      hb = u4
+      lb = u4
+      @jconsts << [tag,(hb<<32) | lb]
+      @jconsts << [tag,0]
       return 2
     when CONSTANT_Double
-      @jconsts << [tag,u4]
-      @jconsts << [tag,u4]
+      hb = u4
+      lb = u4
+      bits = (hb << 32) | lb
+      s = ((bits >> 63) == 0) ? 1 : 0
+      e = ((bits >> 52) & 0x7ff)
+      m = (e == 0) ?
+      (bits & 0xfffffffffffff) << 1 :
+      (bits & 0xfffffffffffff) | 0x10000000000000
+      
+      @jconsts << [tag,s * m * (2 ** (e - 1075))]
+      @jconsts << [tag,0]
       return 2
     when CONSTANT_Class
       @jconsts << [tag,u2]
@@ -259,7 +298,6 @@ class RJClass
   end
   
   def load_methods
-    require 'rjmethod'
     m = RJMethod.new self,@cls
     @jmethods[method_name_type(m.mname,m.mdesc)] = m
   end
@@ -297,12 +335,13 @@ class RJClass
     "#{type} : #{@this_class}(#{@super_class})\n"
     i=1
     @jconsts.each{|c|
-      if c == nil ; next end
-      ret += sprintf("%4d\t",i) + c.to_s + "\n"
+      next if c == nil
+      c = c.join(' , ') if c.kind_of? Array
+      ret += sprintf("%4d\t",i) + Kconv.kconv(Uconv.u8tosjis(c.to_s) , $RJ_KCODE) + "\n"
       i+=1
     }
     @jmethods.each{|k,v|
-      ret += "#{k}\n"
+      # ret += "#{k}\n"
       ret += v.verbose + "\n"
     }
     ret
@@ -326,6 +365,7 @@ if __FILE__ == $0
   fn = ARGV[0] || 'test'
   fn.gsub!('\.','/')
   fn += '.class'
+  $RJ_KCODE = Kconv::SJIS
   
   if (!fn); fn = 'test.class' ; end
   open(fn,'rb'){|f|
