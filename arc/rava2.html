@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<!--
+  $Id: htmlpage.tmpl,v 1.1.1.1 2003/02/26 13:07:29 ko1 Exp $
+  paper index
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	
+	<link rel="stylesheet" type="text/css" href="../css/contents.css" />
+
+    <title> Rava / JavaVM on Ruby (2)</title>
+	<link rev="made" href="mailto:sasada@namikilab.tuat.ac.jp" />
+	<link rel="index" href="../index.html" />
+
+  </head>
+  <body>
+	<h1>K.Sasada's Home Page</h1>
+    
+	<h2> Rava / JavaVM on Ruby (2)</h2>
+    
+<ul><li><a href='#i-1'>Rava / JavaVM on Ruby (2)</a></li>
+<li><a href='#i-2'>なにこれ？</a></li>
+<li><a href='#i-3'>まだやってたの？</a></li>
+<li><a href='#i-4'>対象者</a></li>
+<li><a href='#i-5'>目的</a></li>
+<li><a href='#i-6'>用法</a></li>
+<li><a href='#i-7'>入手</a></li>
+<li><a href='#i-8'>利用規定</a></li>
+<li><a href='#i-9'>追加機能</a></li>
+<li><a href='#i-10'>未実装機能</a></li>
+<li><a href='#i-11'>資料</a></li>
+<li><a href='#i-12'>雑感</a></li>
+</ul><hr />
+
+
+
+<h3 id='i-1'>Rava / JavaVM on Ruby (2)</h3>
+
+
+<ul>
+<li> Fri, 13 Dec 2002 09:56:15 +0900 、初稿。</li>
+<li> Mon, 16 Dec 2002 14:51:16 +0900 、注記追加。</li>
+</ul>
+
+<ul>
+<li> <a href='./rava_jp.html'>Rava / JavaVM on Ruby : JAVA PRESS 誌の掲載原稿＋サポートページ</a></li>
+</ul>
+
+<h3 id='i-2'>なにこれ？</h3>
+
+<p>
+<a href='./rava.html'>Rava / JavaVM on Ruby</a> を参照してください。
+</p>
+
+<h3 id='i-3'>まだやってたの？</h3>
+
+<p>
+はい。ごめんなさい。
+</p>
+
+<h3 id='i-4'>対象者</h3>
+
+
+<ul>
+<li> ジョークのわかる人</li>
+<li> JavaVM マニア（注：私は違います）</li>
+</ul>
+
+<h3 id='i-5'>目的</h3>
+
+<p>
+PTT で発表するため。
+</p>
+
+<h3 id='i-6'>用法</h3>
+
+<p>
+前と一緒。
+</p>
+<p>
+sdl_test を実行させるためには、Ruby/SDL と SDL のライブラリが必要になります。ついでにジョイパッドも。
+</p>
+<p>
+JIT コンパイル（になりかけ）を機能させたいときは、rjmethod_compile.rb を見て下さい。
+</p>
+
+<h3 id='i-7'>入手</h3>
+
+<p>
+<a href='./rava002.lzh'>./rava002.lzh</a>
+</p>
+
+<h3 id='i-8'>利用規定</h3>
+
+<p>
+Ruby と同じライセンスでお願いします。
+</p>
+
+<h3 id='i-9'>追加機能</h3>
+
+
+<ul>
+<li> バイトコード結構</li>
+<li> 文字列の取り扱いを多分まともに</li>
+<li> 例外</li>
+<li> スレッド</li>
+<li> JIT コンパイラの試作さんぷる(profiler and compiler)</li>
+<li> サンプルプログラム追加</li>
+<li> ネイティブメソッドちょいちょい</li>
+<ul>
+<li> スレッド関係</li>
+<li> SDL 関係</li>
+<li> その他</li>
+</ul>
+</ul>
+
+<h3 id='i-10'>未実装機能</h3>
+
+
+<ul>
+<li> バイトコードベリファイア</li>
+<li> 厳密な整数演算</li>
+<li> 厳密な浮動小数点演算（すげーいいかげん）</li>
+<li> 実装してないネイティブメソッドを使う機能</li>
+<li> きちんとした JIT コンパイラ</li>
+<li> スピード</li>
+<li> その他</li>
+</ul>
+
+<h3 id='i-11'>資料</h3>
+
+<p>
+PTT というのでお話させてもらった時の資料です。
+</p>
+<p>
+<a href='rava_slide.ppt'>rava_slide.ppt</a>(PowerPoint),<a href='rava_slide.lzh'>rava_slide.lzh</a>(png)
+</p>
+<p>
+ppt 作成のほうが時間かかってやんの。
+</p>
+<p>
+<em>注記</em> : JIT コンパイラの試作については、「Java Bytecode」→ 「Ruby Source code」をもってコンパイルとしています。また、「一日で終わった」範囲は、実験のために、ある特定のメソッドをその変換が出来るくらいにしたような、そんな試作です。すべてのケースでコンパイルできます！　というような素敵なものではありません。ただし、データの入力さえすれば、出来るんじゃないかとは踏んでるんですが。
+</p>
+
+<h3 id='i-12'>雑感</h3>
+
+<p>
+全国大会どうしよう。。。
+</p>
+
+	
+	<div class="navi">
+	  <a href="../index.html">return to pages index</a>
+	  /
+	  <a href="./index.html">return to index</a>
+	</div>
+	
+	<address>
+	  Sasada Koichi / sasada@namikilab.tuat.ac.jp
+	</address>
+	
+  <div class="date">
+	$Date: 2003/02/26 13:07:29 $
+  </div>
+
+  </body>
+</html>

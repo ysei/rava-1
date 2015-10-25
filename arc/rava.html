@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<!--
+  $Id: rava.html,v 1.2 2003/04/28 10:27:52 ko1 Exp $
+  paper index
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	
+	<link rel="stylesheet" type="text/css" href="../css/contents.css" />
+
+    <title>Rava / JavaVM on Ruby</title>
+	<link rev="made" href="mailto:BYW01264@nifty.ne.jp" />
+	<link rel="index" href="../index.html">
+
+  </head>
+  <body>
+	<h1>K.Sasada's Home Page</h1>
+    
+    
+<h2>Rava / JavaVM on Ruby</h2>
+
+
+<ul>
+<li> Tue, 15 Oct 2002 09:47:06 +0900、初稿。</li>
+<li> Thu, 17 Oct 2002 18:43:17 +0900、改稿。/. に載った記念に、未実装部分追記（ぉぃ）。</li>
+<li> Mon, 16 Dec 2002 14:55:36 +0900、<a href='./rava2.html'>./rava2.html</a> を書きました。</li>
+</ul>
+
+<h3>なんじゃそりゃ</h3>
+
+<p>
+Ruby で書いた JavaVM です。pure ruby です。ええ。
+</p>
+<p>
+JRuby ってあるじゃないですか。あれは、Java で Ruby インタープリタ動かすやつ（らしい）ですけど、これは、Ruby で Java バイトコードを動かします。
+</p>
+
+<p>
+どう考えても、使う利点って（殆ど）無いような気もしますが。
+</p>
+<p>
+誰か考えてそうで、だけど（その無意味さに）誰も作っていなかった（一応、Google様は知らなかった。作っていた人がいたらごめんなさい）。
+</p>
+<p>
+まぁ、ジョークの一つとしてご笑覧ください。
+</p>
+
+
+<h3>つかうとうれしいひと</h3>
+
+<p>
+どんな人が使うとうれしいかと申しますと。
+</p>
+
+<ul>
+<li> JavaVM 勉強したいけど、ドキュメント読むの面倒だなぁ、Ruby ソースのほうが、読むの楽だしぃ、という人（いるんかそんなの）</li>
+<li> もう、Ruby しか使いたくないけど、しょうがなく Java を使う人（うれしいのかほんとに）</li>
+<li> ruby が動くのに JavaVM が動かないようなプラットホームで Java が動かせる（あるのかそんなの）</li>
+</ul>
+<p>
+少しまじめに（必死に利点を考えて）、
+</p>
+
+<ul>
+<li> Java ネイティブメソッドを書きたいけれど、プロトタイプを作りたい(Ruby スクリプトでネイティブメソッドかけるので、プロトタイプを作るのは便利かもしれない)</li>
+</ul>
+<p>
+でも、たしか JRuby もそういうことできるんだよねぇ、確か。違ったっけ。
+</p>
+<p>
+Java のプログラムが Ruby から呼べても、そんなうれしいこと無さそうな気がするしなぁ。
+</p>
+
+<h3>もくてき</h3>
+
+<p>
+自分の目的ですが。
+</p>
+
+<ol>
+<li> Ruby の練習</li>
+<li> JavaVM の復習</li>
+<li> 今後の研究のため（ほんとか？）</li>
+<li> 現実逃避（動機の 50% くらい）</li>
+</ol>
+
+<h3>つかいかた</h3>
+
+<p>
+まず、jdk とってきて、jdk/jre/lib/rt.jar を解凍して、*.class をばらしてください。固まってると、読めません。
+</p>
+<p>
+んで、同じディレクトリに 例えば java/lang/* を置いておきます。そんで、適当に動かしたいものを javac で作ってください。あとは動かすだけです。
+</p>
+
+<blockquote>
+ruby rava.rb [java class name] [args 1] [args 2] ...
+</blockquote>
+<p>
+で、動きます。多分。
+</p>
+<p>
+また、
+</p>
+
+<blockquote>
+ruby rjclass.rb [java class name]
+</blockquote>
+<p>
+で、クラスファイルの情報を、これでもか、ってくらい表示します。ちょっといいかげんだけど。
+</p>
+<p>
+また、
+</p>
+
+<blockquote>
+ruby rjnative.rb [java class name]
+</blockquote>
+<p>
+で、ネイティブメソッド定義用の雛を吐きます。<del>「～はげ～んき」など、言いません。</del>
+</p>
+
+<h3>だうんろーど</h3>
+
+<p>
+<a href='./rava001.lzh'>./rava001.lzh</a>
+</p>
+<p>
+Windows2000 Pro / ruby 1.6.7 mswin版 だけで動作確認しています。
+</p>
+
+<h3>おやくそく</h3>
+
+<p>
+Ruby と同じライセンスでお願いします。（と言っておくと、面倒がないらしい）。
+</p>
+<p>
+原則、私に迷惑がかからないように。あとは好きにしてください。
+</p>
+<p>
+バグ報告とか、利用報告とかあると、うれしく思います。
+</p>
+<p>
+あ、著作権は放棄しません。というか、できません？
+</p>
+
+<h3>もうできてること</h3>
+
+<p>
+とりあえず並べてみました。
+</p>
+
+<ul>
+<li> バイトコード半分くらい?</li>
+<li> メソッド呼び出し</li>
+<li> スタティックメソッド呼び出し</li>
+<li> フィールド読み書き</li>
+<li> スタティックフィールド読み書き</li>
+<li> ネイティブメソッドを ruby で書き書き</li>
+<li> クラスの解釈・表示</li>
+<li> 継承・ポリモフィズムの実現（メソッド呼び出しで出来上がってるってことだけど）</li>
+</ul>
+
+<h3>まだできてないこと</h3>
+
+<p>
+とりあえず、まだたっくさんあります。
+</p>
+
+<ul>
+<li> バイトコード半分くらい?</li>
+<li> スレッド</li>
+<li> うごかないネイティブメソッドがごろごろ</li>
+<li> ネイティブメソッドのも～っと簡単な追加</li>
+<li> jar アーカイブから直接クラスをロード</li>
+<li> 完璧なコード（バグが結構ありそう）</li>
+<li> 速さ（おせー・・・）</li>
+<li> テスト（どーやって作ればいいんだ、こんなものに）</li>
+<li> すてきな名前（Rava はかっこわるいぞ）</li>
+<li> きちんとした文字列処理(UTF-8)&lt;New!&gt;</li>
+<li> すっかり忘れてた例外処理&lt;New!&gt;</li>
+<li> まだまだありそう</li>
+</ul>
+<p>
+未実装部分を New! って言うなよ・・・。いや、ほんま忘れてたんです。
+</p>
+
+<h3>おもうこと</h3>
+
+<p>
+Ruby やっぱすごいわぁ。一週間、実質週末3日間だけでこれだけできちゃうんだもんなぁ。
+</p>
+<p>
+まじめな話、これでVMのナニが研究できるんじゃないかともくろんでます。とりあえず、来年の仕事だけれど、それは。
+</p>
+<p>
+まぁ、ジョークってことで一つ。
+</p>
+<p>
+名前。JRuby の向こうを張って、RJava ってしたかったんだけれど、既に、rjava , remote java っていうユーティリティがあるそうで断念。とりあえず Rava。なんとなく、シムシティーの新聞を思い出しませんか？
+</p>
+<p>
+Ruby と Java 、いったりきたりしてソース書いてると、だめっすね。とりあえず Java がかけなくなった。文字列を''で囲んでみたり、';' を忘れてみたり。
+</p>
+<p>
+拙いソースですが、改善点などあれば、ご教授いただければ幸いです。
+</p>
+
+<h4>らいせんす</h4>
+
+<p>
+Sun のクラスファイルのライセンスって、どうなってるんですかね？　何も考えず、JRE のクラスを解凍して使ってたんですが。これ自体を配ってるわけじゃないから大丈夫だとは思うんですが、実際、それがないと動かないし。ネイティブコードの名前とか、勝手に使ってるし。うーん、どうなのかな？　識者のコメント求む。
+</p>
+
+    
+	<div class="navi">
+	  <a href="../index.html">return to pages index</a>
+	  /
+	  <a href="./index.html">return to index</a>
+	</div>
+	
+	<address>
+	  Sasada Koichi / sasada@namikilab.tuat.ac.jp
+	</address>
+	
+  <div class="date">
+	$Date: 2003/04/28 10:27:52 $
+  </div>
+
+  </body>
+</html>
+
